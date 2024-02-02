@@ -48,7 +48,7 @@ class Conexion():
         if len(listaProductos) > 0:
             resp["estatus"]="ok"
             resp["mensaje"]="Lista de fotos"
-            resp["productos"]=listaProductos
+            resp["fotos"]=listaProductos
         else:
             resp["estatus"]="error"
             resp["mensaje"]="No hay productos registrados"

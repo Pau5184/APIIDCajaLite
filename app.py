@@ -3,7 +3,7 @@ from V1.ProductosBPV1 import productosBP
 from flask_cors import CORS
 
 app=Flask(__name__)
-CORS(app)
+##CORS(app)
 app.register_blueprint(productosBP)
 
 @app.route('/',methods=['GET'])

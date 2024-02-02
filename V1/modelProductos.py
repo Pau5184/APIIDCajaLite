@@ -27,8 +27,8 @@ class Conexion():
         productos = self.db.Productos.find()
         listaProductos = []
         for s in productos:
-            image_base64 = base64.b64encode(s['foto']).decode('utf-8')
-            listaProductos.append({"codigoBase":s["codigoBase"], "nombre":s["nombre"], "foto":image_base64, "existencia":s["existencia"], "precios":s["precios"]})
+            ##image_base64 = base64.b64encode(s['foto']).decode('utf-8')
+            listaProductos.append({"codigoBase":s["codigoBase"], "nombre":s["nombre"], "existencia":s["existencia"], "precios":s["precios"]})
         if len(listaProductos) > 0:
             resp["estatus"]="ok"
             resp["mensaje"]="Lista de productos"
@@ -47,7 +47,7 @@ class Conexion():
             listaProductos.append({"codigoBase":s["codigoBase"], "foto":image_base64})
         if len(listaProductos) > 0:
             resp["estatus"]="ok"
-            resp["mensaje"]="Lista de productos"
+            resp["mensaje"]="Lista de fotos"
             resp["productos"]=listaProductos
         else:
             resp["estatus"]="error"

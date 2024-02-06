@@ -21,3 +21,17 @@ def obtenerFotosProductos():
     conn = Conexion()
     resp = conn.obtenerFotosProductos()
     return resp
+
+@productosBP.route('/obtenerProducto/<codigoBase>', methods=['GET'])
+def obtenerProducto(codigoBase):
+    conn = Conexion()
+    resp = conn.obtenerProducto(codigoBase)
+    return resp
+
+#Editar producto
+@productosBP.route('/editarProducto', methods=['PUT'])
+def editarProducto():
+    data = request.get_json()
+    conn = Conexion()
+    resp = conn.editarProducto(data)
+    return resp

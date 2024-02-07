@@ -10,7 +10,7 @@ class Conexion():
         
     def registrarProducto(self, data):
         resp = {"estatus":"","mensaje":""}
-        producto=self.db.Productos.find_one({"codigoBase":data["codigoBase"]})
+        producto=self.db.Productos.find_one({"_id":data["codigoBase"]})
         if producto:
             resp["estatus"]="error"
             resp["mensaje"]="El producto ya existe"
@@ -77,6 +77,18 @@ class Conexion():
             self.db.Productos.update_one({"codigoBase":data["codigoBase"]},{"$set":data})
             resp["estatus"]="ok"
             resp["mensaje"]="Producto actualizado"
+        else:
+            resp["estatus"]="error"
+            resp["mensaje"]="Producto no encontrado"
+        return resp
+    
+    def eliminarProducto(self, codigoBase):
+        resp = {"estatus":"","mensaje":""}
+        producto=self.db.Productos.find_one({"codigoBase":codigoBase})
+        if producto:
+            self.db.Productos.delete_one({"codigoBase":codigoBase})
+            resp["estatus"]="ok"
+            resp["mensaje"]="Producto eliminado"
         else:
             resp["estatus"]="error"
             resp["mensaje"]="Producto no encontrado"

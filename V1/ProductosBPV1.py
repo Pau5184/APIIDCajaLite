@@ -35,3 +35,10 @@ def editarProducto():
     conn = Conexion()
     resp = conn.editarProducto(data)
     return resp
+
+#Eliminar producto
+@productosBP.route('/eliminarProducto/<codigoBase>', methods=['DELETE'])
+def eliminarProducto(codigoBase):
+    conn = Conexion()
+    resp = conn.eliminarProducto(codigoBase)
+    return resp

@@ -5,6 +5,7 @@ from V1.MarcasBPV1 import marcasBP
 from V1.LineasBPV1 import lineasBP
 from V1.VentasBPV1 import ventasBP
 from V1.UsuariosBPV1 import usuariosBP
+from V1.InventarioBPV1 import inventarioBP
 from flask_cors import CORS
 
 app=Flask(__name__)
@@ -15,6 +16,7 @@ app.register_blueprint(marcasBP)
 app.register_blueprint(lineasBP)
 app.register_blueprint(ventasBP)
 app.register_blueprint(usuariosBP)
+app.register_blueprint(inventarioBP)
 
 @app.route('/',methods=['GET'])
 def init():

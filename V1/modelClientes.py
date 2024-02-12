@@ -73,7 +73,9 @@ class Conexion():
             if 'foto' in data:
                 image_binary = base64.b64decode(data['foto'])
                 data['foto'] = Binary(image_binary)
-            self.db.Clientes.update_one({"_id":ObjectId(data["_id"])},{"$set":data})
+            # Remove the _id key from data
+            data.pop('_id', None)
+            self.db.Clientes.update_one({"_id":ObjectId(cliente["_id"])},{"$set":data})
             resp["estatus"]="ok"
             resp["mensaje"]="Cliente actualizado"
         else:

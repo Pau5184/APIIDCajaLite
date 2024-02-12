@@ -12,6 +12,11 @@ class Conexion():
         resp = {"estatus":"","mensaje":""}
         try:
             self.db.Ventas.insert_one(data)
+            for producto in data['productos']:
+                self.db.Productos.update_one(
+                    {'codigoBase': producto['producto']},
+                    {'$inc': {'existencia': -producto['cantidad']}}
+                )
             resp["estatus"]="ok"
             resp["mensaje"]="Venta registrada"
         except Exception as e:

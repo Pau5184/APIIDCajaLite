@@ -29,7 +29,7 @@ def obtenerProducto(codigoBase):
     return resp
 
 @productosBP.route('/obtenerProductosVenta', methods=['GET'])
-def obtenerProductos():
+def obtenerProductosVenta():
     conn = Conexion()
     resp = conn.obtenerProductosVenta()
     return resp

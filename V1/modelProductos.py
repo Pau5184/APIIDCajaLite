@@ -93,3 +93,21 @@ class Conexion():
             resp["estatus"]="error"
             resp["mensaje"]="Producto no encontrado"
         return resp
+    
+    def obtenerProductosVenta(self):
+        resp={"estatus":"", "mensaje":""}
+        productos = self.db.Productos.find()
+        listaProductos = []
+        for s in productos:
+            # Check if the precios array is not empty
+            if s['precios']:
+                image_base64 = base64.b64encode(s['foto']).decode('utf-8')
+                listaProductos.append({"codigoBase":s["codigoBase"], "nombre":s["nombre"], "foto":image_base64, "existencia":s["existencia"], "precios":s["precios"], "unidadBase":s["unidadBase"]})
+        if len(listaProductos) > 0:
+            resp["estatus"]="ok"
+            resp["mensaje"]="Lista de productos"
+            resp["productos"]=listaProductos
+        else:
+            resp["estatus"]="error"
+            resp["mensaje"]="No hay productos registrados"
+        return resp

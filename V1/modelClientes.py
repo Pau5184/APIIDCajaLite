@@ -94,3 +94,4 @@ class Conexion():
             resp["estatus"]="error"
             resp["mensaje"]="Cliente no encontrado"
         return resp
+    

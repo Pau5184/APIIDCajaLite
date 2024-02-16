@@ -102,7 +102,14 @@ class Conexion():
             # Check if the precios array is not empty
             if s['precios']:
                 image_base64 = base64.b64encode(s['foto']).decode('utf-8')
-                listaProductos.append({"codigoBase":s["codigoBase"], "nombre":s["nombre"], "foto":image_base64, "existencia":s["existencia"], "precios":s["precios"], "unidadBase":s["unidadBase"]})
+                listaProductos.append({
+                    "codigoBase":s["codigoBase"], 
+                    "nombre":s["nombre"], 
+                    "foto":image_base64, 
+                    "existencia":s["existencia"], 
+                    "precio":s["precios"][0]["total"],  # Only include the total of the first precio
+                    "unidadBase":s["unidadBase"]
+                })
         if len(listaProductos) > 0:
             resp["estatus"]="ok"
             resp["mensaje"]="Lista de productos"

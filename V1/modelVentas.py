@@ -16,7 +16,7 @@ class Conexion():
             self.db.Ventas.insert_one(data)
             for producto in data['productos']:
                 self.db.Productos.update_one(
-                    {'codigoBase': producto['producto']},
+                    {'codigoBase': producto['codigoBase']},
                     {'$inc': {'existencia': -producto['cantidad']}}
                 )
             resp["estatus"]="ok"

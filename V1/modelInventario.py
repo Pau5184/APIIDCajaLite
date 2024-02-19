@@ -11,8 +11,6 @@ class Conexion():
     def registrarInventario(self, data):
         resp = {"estatus":"","mensaje":""}
         try:
-            for producto in data['productos']:
-                producto['producto']=ObjectId(producto['producto'])
             self.db.Inventario.insert_one(data)
             resp["estatus"]="ok"
             resp["mensaje"]="Producto registrado"

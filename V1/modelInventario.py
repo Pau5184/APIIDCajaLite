@@ -43,7 +43,7 @@ class Conexion():
             usuario=self.db.Usuarios.find_one({"_id":ObjectId(inventario["usuario"])})
             listaProductos = []
             for s in inventario["productos"]:
-                producto=self.db.Productos.find_one({"_id":ObjectId(s["producto"])})
+                producto=self.db.Productos.find_one({"codigoBase":(s["producto"])})
                 listaProductos.append({"codigoBase":producto["codigoBase"], "producto":producto["nombre"], "cantidad":s["cantidad"], "costoCompra":s["costoCompra"]})
             resp["estatus"]="ok"
             resp["mensaje"]="Inventario encontrado"

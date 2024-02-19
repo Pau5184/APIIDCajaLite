@@ -35,7 +35,7 @@ class Conexion():
             resp["mensaje"]="No hay inventarios registrados"
         return resp
     
-    ##Obtener un inventario por id. Datos a obtener: _id, concepto, tipo, almacen, usuario (obtener el nombre del usuario ya que viene el id), estatus, fecha, totalUnidades, productos (id, producto (obtener el nombre del producto), cantidad, costoCompra), partidas, total
+    ##Obtener un inventario por id. Datos a obtener: _id, concepto, almacen, usuario (obtener el nombre del usuario ya que viene el id), estatus, fecha, totalUnidades, productos (id, producto (obtener el nombre del producto), cantidad, costoCompra), partidas, total
     def obtenerInventario(self, id):
         resp={"estatus":"", "mensaje":""}
         inventario = self.db.Inventario.find_one({"_id":ObjectId(id)})
@@ -47,7 +47,7 @@ class Conexion():
                 listaProductos.append({"codigoBase":producto["codigoBase"], "producto":producto["nombre"], "cantidad":s["cantidad"], "costoCompra":s["costoCompra"]})
             resp["estatus"]="ok"
             resp["mensaje"]="Inventario encontrado"
-            resp["inventario"]={"_id":str(inventario["_id"]), "concepto":inventario["concepto"], "tipo":inventario["tipo"], "almacen":inventario["almacen"], "usuario":usuario["nombre"], "estatus":inventario["estatus"], "fecha":inventario["fecha"], "totalUnidades":inventario["totalUnidades"], "productos":listaProductos, "partidas":inventario["partidas"], "total":inventario["total"]}
+            resp["inventario"]={"_id":str(inventario["_id"]), "concepto":inventario["concepto"], "almacen":inventario["almacen"], "usuario":usuario["nombre"], "estatus":inventario["estatus"], "fecha":inventario["fecha"], "totalUnidades":inventario["totalUnidades"], "productos":listaProductos, "partidas":inventario["partidas"], "total":inventario["total"]}
         else:
             resp["estatus"]="error"
             resp["mensaje"]="Inventario no encontrado"

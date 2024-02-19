@@ -28,7 +28,7 @@ class Conexion():
         listaProductos = []
         for s in productos:
             image_base64 = base64.b64encode(s['foto']).decode('utf-8')
-            listaProductos.append({"codigoBase":s["codigoBase"], "nombre":s["nombre"], "foto":image_base64, "existencia":s["existencia"], "precios":s["precios"], "unidadBase":s["unidadBase"]})
+            listaProductos.append({"codigoBase":s["codigoBase"], "nombre":s["nombre"], "foto":image_base64, "existencia":s["existencia"], "precios":s["precios"], "unidadBase":s["unidadBase"], "unidadCompra":s["unidadCompra"]})
         if len(listaProductos) > 0:
             resp["estatus"]="ok"
             resp["mensaje"]="Lista de productos"

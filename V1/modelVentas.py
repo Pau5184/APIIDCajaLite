@@ -11,6 +11,8 @@ class Conexion():
     def registrarVenta(self, data):
         resp = {"estatus":"","mensaje":""}
         try:
+            data["cliente"]=ObjectId(data["cliente"])
+            data["cajero"]=ObjectId(data["cajero"])
             self.db.Ventas.insert_one(data)
             for producto in data['productos']:
                 self.db.Productos.update_one(
@@ -29,9 +31,9 @@ class Conexion():
         ventas = self.db.Ventas.find()
         listaVentas = []
         for s in ventas:
-            cliente=self.db.Clientes.find_one({"_id":ObjectId(s["cliente"])})
+            cliente=self.db.Clientes.find_one({"_id":(s["cliente"])})
             s["cliente"]=cliente["nombre"] + (" "+cliente["apPaterno"] if 'apPaterno' in cliente else "")+(" "+cliente["apMaterno"] if 'apMaterno' in cliente else "")
-            usuario=self.db.Usuarios.find_one({"_id":ObjectId(s["cajero"])})
+            usuario=self.db.Usuarios.find_one({"_id":(s["cajero"])})
             s["cajero"]=usuario["nombre"]+(" "+usuario["apPaterno"] if 'apPaterno' in usuario else "")+(" "+usuario["apMaterno"] if 'apMaterno' in usuario else "")
             listaVentas.append({"idVenta":str(s["_id"]), "fechaVenta":s["fechaVenta"], "horaVenta":s["horaVenta"], "cliente":s["cliente"], "cajero":s["cajero"], "pagadoEfectivo":s["pagadoEfectivo"], "pagadoTarjeta":s["pagadoTarjeta"], "pagadoTrans":s["pagadoTrans"], "total":s["total"]})
         if len(listaVentas) > 0:

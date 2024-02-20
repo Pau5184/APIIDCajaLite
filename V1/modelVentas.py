@@ -89,5 +89,6 @@ class Conexion():
         else:
             resp["estatus"]="error"
             resp["mensaje"]="Venta no encontrada"
+        return resp
 
     

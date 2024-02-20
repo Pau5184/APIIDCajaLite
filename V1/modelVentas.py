@@ -83,7 +83,7 @@ class Conexion():
                 data['tiquet'] = Binary(image_binary)
             # Remove the _id key from data
             data.pop('_id', None)
-            self.db.Ventas.update_one({"_id":ObjectId(data["_id"])},{"$set":data})
+            self.db.Ventas.update_one({"_id":ObjectId(venta["_id"])},{"$set":data})
             resp["estatus"]="ok"
             resp["mensaje"]="Venta actualizada"
         else:

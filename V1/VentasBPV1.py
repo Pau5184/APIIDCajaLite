@@ -16,7 +16,7 @@ def obtenerVentas():
     resp = conn.obtenerVentas()
     return resp
 
-@ventasBP.route('/obtenerIdVenta', methods=['GET'])
+@ventasBP.route('/obtenerIdVenta', methods=['POST'])
 def obtenerIdVenta():
     data = request.get_json()
     conn = Conexion()

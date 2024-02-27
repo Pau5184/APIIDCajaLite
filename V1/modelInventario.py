@@ -13,6 +13,17 @@ class Conexion():
         try:
             data["usuario"]=ObjectId(data["usuario"])
             self.db.Inventario.insert_one(data)
+            for producto in data['productos']:
+                if data['concepto'] in ["ENTRADA POR COMPRAS M.I.", "ENTRADA POR AJUSTE DE INVENTARIO"]:
+                    self.db.Productos.update_one(
+                        {'codigoBase': producto['producto']},
+                        {'$inc': {'existencia': producto['cantidad']}}
+                    )
+                else:
+                    self.db.Productos.update_one(
+                        {'codigoBase': producto['producto']},
+                        {'$inc': {'existencia': -producto['cantidad']}}
+                    )
             resp["estatus"]="ok"
             resp["mensaje"]="Producto registrado"
         except Exception as e:
@@ -41,7 +52,7 @@ class Conexion():
         resp={"estatus":"", "mensaje":""}
         inventario = self.db.Inventario.find_one({"_id":ObjectId(id)})
         if inventario:
-            usuario=self.db.Usuarios.find_one({"_id":ObjectId(inventario["usuario"])})
+            usuario=self.db.Usuarios.find_one({"_id":(inventario["usuario"])})
             listaProductos = []
             for s in inventario["productos"]:
                 producto=self.db.Productos.find_one({"codigoBase":(s["producto"])})

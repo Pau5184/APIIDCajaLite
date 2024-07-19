@@ -1,6 +1,7 @@
 from pymongo import MongoClient
 from bson import ObjectId
 from bson.binary import Binary
+from datetime import datetime
 import base64
 
 class Conexion():
@@ -33,18 +34,34 @@ class Conexion():
     
     ##Obtener lista de inventarios. Datos a obtener: _id, concepto, fecha, totalUnidades
     def obtenerInventarios(self):
-        resp={"estatus":"", "mensaje":""}
+        resp = {"estatus": "", "mensaje": ""}
+        today = datetime.now()
         inventarios = self.db.Inventario.find()
         listaInventarios = []
+
         for s in inventarios:
-            listaInventarios.append({"_id":str(s["_id"]), "concepto":s["concepto"], "fecha":s["fecha"], "totalUnidades":s["totalUnidades"]})
+            # Attempt to parse the date in both formats
+            try:
+                fecha = datetime.strptime(s["fecha"], "%d/%m/%Y")
+            except ValueError:
+                try:
+                    fecha = datetime.strptime(s["fecha"], "%m/%d/%Y")
+                except ValueError:
+                    # If both formats fail, skip this record
+                    continue
+            
+            # Check if the date matches today's date
+            if fecha.date() == today.date():
+                listaInventarios.append({"_id": str(s["_id"]), "concepto": s["concepto"], "fecha": s["fecha"], "totalUnidades": s["totalUnidades"]})
+
         if len(listaInventarios) > 0:
-            resp["estatus"]="ok"
-            resp["mensaje"]="Lista de inventarios"
-            resp["inventarios"]=listaInventarios
+            resp["estatus"] = "ok"
+            resp["mensaje"] = "Lista de inventarios"
+            resp["inventarios"] = listaInventarios
         else:
-            resp["estatus"]="error"
-            resp["mensaje"]="No hay inventarios registrados"
+            resp["estatus"] = "error"
+            resp["mensaje"] = "No hay inventarios registrados para hoy"
+        
         return resp
     
     ##Obtener un inventario por id. Datos a obtener: _id, concepto, almacen, usuario (obtener el nombre del usuario ya que viene el id), estatus, fecha, totalUnidades, productos (id, producto (obtener el nombre del producto), cantidad, costoCompra), partidas, total

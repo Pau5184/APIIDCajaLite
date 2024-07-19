@@ -33,26 +33,42 @@ class Conexion():
         return resp
     
     ##Obtener lista de inventarios. Datos a obtener: _id, concepto, fecha, totalUnidades
-    def obtenerInventarios(self):
+    def obtenerInventarios(self, data):
+        start_date_str = data["startdate"];
+        end_date_str = data["enddate"];
         resp = {"estatus": "", "mensaje": ""}
-        today = datetime.now()
-        inventarios = self.db.Inventario.find()
-        listaInventarios = []
+        # Convert start and end dates to datetime objects
+        try:
+            start_date = datetime.strptime(start_date_str, "%d/%m/%Y")
+        except ValueError:
+            start_date = datetime.strptime(start_date_str, "%m/%d/%Y")
+        
+        try:
+            end_date = datetime.strptime(end_date_str, "%d/%m/%Y")
+        except ValueError:
+            end_date = datetime.strptime(end_date_str, "%m/%d/%Y")
 
+        # Ensure end_date is at the end of the day
+        end_date = end_date.replace(hour=23, minute=59, second=59)
+
+        inventarios = self.db.Inventario.find()
+
+        listaInventarios = []
         for s in inventarios:
-            # Attempt to parse the date in both formats
+            # Attempt to parse the fecha field
             try:
-                fecha = datetime.strptime(s["fecha"], "%d/%m/%Y")
+                fecha_inventario = datetime.strptime(s["fecha"], "%d/%m/%Y")
             except ValueError:
-                try:
-                    fecha = datetime.strptime(s["fecha"], "%m/%d/%Y")
-                except ValueError:
-                    # If both formats fail, skip this record
-                    continue
+                fecha_inventario = datetime.strptime(s["fecha"], "%m/%d/%Y")
             
-            # Check if the date matches today's date
-            if fecha.date() == today.date():
-                listaInventarios.append({"_id": str(s["_id"]), "concepto": s["concepto"], "fecha": s["fecha"], "totalUnidades": s["totalUnidades"]})
+            # Include the inventory if its fecha is within the specified range
+            if start_date <= fecha_inventario <= end_date:
+                listaInventarios.append({
+                    "_id": str(s["_id"]),
+                    "concepto": s["concepto"],
+                    "fecha": s["fecha"],
+                    "totalUnidades": s["totalUnidades"]
+                })
 
         if len(listaInventarios) > 0:
             resp["estatus"] = "ok"
@@ -60,7 +76,7 @@ class Conexion():
             resp["inventarios"] = listaInventarios
         else:
             resp["estatus"] = "error"
-            resp["mensaje"] = "No hay inventarios registrados para hoy"
+            resp["mensaje"] = "No hay inventarios registrados en el rango de fechas proporcionado"
         
         return resp
     

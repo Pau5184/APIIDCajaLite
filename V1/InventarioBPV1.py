@@ -10,10 +10,11 @@ def registrarInventario():
     resp = conn.registrarInventario(data)
     return resp
 
-@inventarioBP.route('/obtenerInventarios', methods=['GET'])
+@inventarioBP.route('/obtenerInventarios', methods=['POST'])
 def obtenerInventarios():
+    data = request.get_json()
     conn = Conexion()
-    resp = conn.obtenerInventarios()
+    resp = conn.obtenerInventarios(data)
     return resp
 
 @inventarioBP.route('/obtenerInventario/<id>', methods=['GET'])

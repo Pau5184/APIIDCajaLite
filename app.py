@@ -23,5 +23,5 @@ def init():
     return "Escuchando el Servicio REST de ID Caja Lite"
 
 if __name__=='__main__':
-    app.run(debug=True, host='192.168.1.103', port=5000)
-    #app.run(host='0.0.0.0', port=8080)
+    #app.run(debug=True, host='192.168.1.103', port=5000)
+    app.run(host='0.0.0.0', port=8080)

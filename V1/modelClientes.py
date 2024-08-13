@@ -51,6 +51,33 @@ class Conexion():
             resp["mensaje"]="Cliente no encontrado"
         return resp
     
+    def obtenerClienteNombre(self, data):
+        resp = {"estatus": "", "mensaje": ""}
+        cliente = self.db.Clientes.find_one({"nombre": data["nombre"]})
+        if cliente:
+            image_base64 = base64.b64encode(cliente['foto']).decode('utf-8')
+            resp["estatus"] = "ok"
+            resp["mensaje"] = "Cliente encontrado"
+            resp["cliente"] = {
+                "_id": str(cliente["_id"]),
+                "tipoPersona": cliente["tipoPersona"],
+                "nombre": cliente["nombre"],
+                "apPaterno": cliente["apPaterno"],
+                "apMaterno": cliente["apMaterno"],
+                "telMovil": cliente["telMovil"],
+                "email": cliente["email"],
+                "curp": cliente["curp"],
+                "nombreComercial": cliente["nombreComercial"],
+                "rfc": cliente["rfc"],
+                "ctaBancaria": cliente["ctaBancaria"],
+                "banco": cliente["banco"],
+                "domicilios": cliente["domicilios"]
+            }
+        else:
+            resp["estatus"] = "error"
+            resp["mensaje"] = "Cliente no encontrado"
+        return resp
+    
     def obtenerClientesVenta(self):
         resp={"estatus":"", "mensaje":""}
         clientes = self.db.Clientes.find()

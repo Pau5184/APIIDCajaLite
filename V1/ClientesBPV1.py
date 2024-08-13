@@ -22,6 +22,13 @@ def obtenerCliente(id):
     resp = conn.obtenerCliente(id)
     return resp
 
+@clientesBP.route('/obtenerClienteNombre', methods=['POST'])
+def obtenerClienteNombre():
+    data = request.get_json()
+    conn = Conexion()
+    resp = conn.obtenerClienteNombre(data)
+    return resp
+
 @clientesBP.route('/obtenerClientesVenta', methods=['GET'])
 def obtenerClientesVenta():
     conn = Conexion()

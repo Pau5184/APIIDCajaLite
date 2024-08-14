@@ -70,6 +70,16 @@ class Conexion():
                     "totalUnidades": s["totalUnidades"]
                 })
 
+        # Helper function to parse date
+        def parse_date(date_str):
+            try:
+                return datetime.strptime(date_str, "%d/%m/%Y")
+            except ValueError:
+                return datetime.strptime(date_str, "%m/%d/%Y")
+
+        # Sort the list of inventories by date
+        listaInventarios.sort(key=lambda x: parse_date(x["fecha"]), reverse= True)
+
         if len(listaInventarios) > 0:
             resp["estatus"] = "ok"
             resp["mensaje"] = "Lista de inventarios"

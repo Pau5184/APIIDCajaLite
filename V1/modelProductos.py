@@ -13,7 +13,7 @@ class Conexion():
         producto=self.db.Productos.find_one({"codigoBase":data["codigoBase"]})
         if producto:
             resp["estatus"]="error"
-            resp["mensaje"]="El producto ya existe"
+            resp["mensaje"]="Este producto ya existe. Inténtelo de nuevo"
         else:
             image_binary = base64.b64decode(data['foto'])
             data['foto'] = Binary(image_binary)

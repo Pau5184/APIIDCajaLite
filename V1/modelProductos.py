@@ -10,7 +10,7 @@ class Conexion():
         
     def registrarProducto(self, data):
         resp = {"estatus":"","mensaje":""}
-        producto=self.db.Productos.find_one({"_id":data["codigoBase"]})
+        producto=self.db.Productos.find_one({"codigoBase":data["codigoBase"]})
         if producto:
             resp["estatus"]="error"
             resp["mensaje"]="El producto ya existe"

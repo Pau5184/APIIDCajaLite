@@ -28,9 +28,10 @@ class Conexion():
         return resp
     
     def obtenerVentas(self, data):
-        start_date_str = data["startdate"];
-        end_date_str = data["enddate"];
-        resp={"estatus":"", "mensaje":""}
+        start_date_str = data["startdate"]
+        end_date_str = data["enddate"]
+        resp = {"estatus": "", "mensaje": ""}
+        
         # Convert start and end dates to datetime objects
         try:
             start_date = datetime.strptime(start_date_str, "%d/%m/%Y")
@@ -41,10 +42,16 @@ class Conexion():
             end_date = datetime.strptime(end_date_str, "%d/%m/%Y")
         except ValueError:
             end_date = datetime.strptime(end_date_str, "%m/%d/%Y")
-
+    
+        # Check if start_date is greater than end_date
+        if start_date > end_date:
+            resp["estatus"] = "error"
+            resp["mensaje"] = "La fecha de inicio no puede ser mayor que la fecha de fin"
+            return resp
+    
         # Ensure end_date is at the end of the day
         end_date = end_date.replace(hour=23, minute=59, second=59)
-
+    
         ventas = self.db.Ventas.find()
         listaVentas = []
         for s in ventas:
@@ -53,7 +60,7 @@ class Conexion():
                 fecha_venta = datetime.strptime(s["fechaVenta"], "%d/%m/%Y")
             except ValueError:
                 fecha_venta = datetime.strptime(s["fechaVenta"], "%m/%d/%Y")
-        
+            
             # Include the sale if its fechaVenta is within the specified range
             if start_date <= fecha_venta <= end_date:
                 cliente = self.db.Clientes.find_one({"_id": s["cliente"]})
@@ -71,24 +78,25 @@ class Conexion():
                     "pagadoTrans": s["pagadoTrans"],
                     "total": s["total"]
                 })
-
+    
         # Helper function to parse date and time
         def parse_datetime(date_str, time_str):
             try:
                 return datetime.strptime(date_str + " " + time_str, "%d/%m/%Y %H:%M")
             except ValueError:
                 return datetime.strptime(date_str + " " + time_str, "%m/%d/%Y %H:%M")
-
+    
         # Sort the list of sales by date and hour in descending order
         listaVentas.sort(key=lambda x: parse_datetime(x["fechaVenta"], x["horaVenta"]), reverse=True)
         
         if len(listaVentas) > 0:
-            resp["estatus"]="ok"
-            resp["mensaje"]="Lista de ventas"
-            resp["ventas"]=listaVentas
+            resp["estatus"] = "ok"
+            resp["mensaje"] = "Lista de ventas"
+            resp["ventas"] = listaVentas
         else:
-            resp["estatus"]="error"
-            resp["mensaje"]="No hay ventas registradas"
+            resp["estatus"] = "error"
+            resp["mensaje"] = "No hay ventas registradas"
+        
         return resp
     
     ##Obtener el id de una venta por fecha, hora, total, cliente y cajero

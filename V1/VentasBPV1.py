@@ -10,10 +10,11 @@ def registrarVenta():
     resp = conn.registrarVenta(data)
     return resp
 
-@ventasBP.route('/obtenerVentas', methods=['GET'])
+@ventasBP.route('/obtenerVentas', methods=['POST'])
 def obtenerVentas():
+    data = request.get_json()
     conn = Conexion()
-    resp = conn.obtenerVentas()
+    resp = conn.obtenerVentas(data)
     return resp
 
 @ventasBP.route('/obtenerIdVenta', methods=['POST'])

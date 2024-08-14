@@ -61,7 +61,7 @@ class Conexion():
             image_base64 = base64.b64encode(producto['foto']).decode('utf-8')
             resp["estatus"]="ok"
             resp["mensaje"]="Producto encontrado"
-            resp["producto"]={"codigoBase":producto["codigoBase"], "nombre":producto["nombre"], "descripcion":producto["descripcion"],"foto":image_base64, "unidadBase":producto["unidadBase"], "unidadCompra":producto["unidadCompra"], "factorConversion":producto["factorConversion"],"existencia":producto["existencia"], "proveedor":producto["proveedor"], "estatus":producto["estatus"], "minimoVender":producto["minimoVender"], "marca":producto["marca"], "linea":producto["linea"], "ancho":producto["ancho"], "alto":producto["alto"], "largo":producto["largo"], "volumen":producto["volumen"], "impuestos":producto["impuestos"], "precios":producto["precios"]}
+            resp["producto"]={"codigoBase":producto["codigoBase"], "nombre":producto["nombre"], "descripcion":producto["descripcion"],"foto":image_base64, "unidadBase":producto["unidadBase"], "unidadCompra":producto["unidadCompra"], "factorConversion":producto["factorConversion"],"existencia":producto["existencia"], "proveedor":producto["proveedor"], "estatus":producto["estatus"], "minimoVender":producto["minimoVender"], "marca":producto["marca"], "linea":producto["linea"], "ancho":producto["ancho"], "alto":producto["alto"], "largo":producto["largo"], "volumen":producto["volumen"], "precios":producto["precios"]}
         else:
             resp["estatus"]="error"
             resp["mensaje"]="Producto no encontrado"

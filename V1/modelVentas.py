@@ -1,6 +1,7 @@
 from pymongo import MongoClient
 from bson import ObjectId
 from bson.binary import Binary
+from datetime import datetime
 import base64
 
 class Conexion():
@@ -26,16 +27,61 @@ class Conexion():
             resp["mensaje"]=str(e)
         return resp
     
-    def obtenerVentas(self):
+    def obtenerVentas(self, data):
+        start_date_str = data["startdate"];
+        end_date_str = data["enddate"];
         resp={"estatus":"", "mensaje":""}
+        # Convert start and end dates to datetime objects
+        try:
+            start_date = datetime.strptime(start_date_str, "%d/%m/%Y")
+        except ValueError:
+            start_date = datetime.strptime(start_date_str, "%m/%d/%Y")
+        
+        try:
+            end_date = datetime.strptime(end_date_str, "%d/%m/%Y")
+        except ValueError:
+            end_date = datetime.strptime(end_date_str, "%m/%d/%Y")
+
+        # Ensure end_date is at the end of the day
+        end_date = end_date.replace(hour=23, minute=59, second=59)
+
         ventas = self.db.Ventas.find()
         listaVentas = []
         for s in ventas:
-            cliente=self.db.Clientes.find_one({"_id":(s["cliente"])})
-            s["cliente"]=cliente["nombre"] + (" "+cliente["apPaterno"] if 'apPaterno' in cliente else "")+(" "+cliente["apMaterno"] if 'apMaterno' in cliente else "")
-            usuario=self.db.Usuarios.find_one({"_id":(s["cajero"])})
-            s["cajero"]=usuario["nombre"]+(" "+usuario["apPaterno"] if 'apPaterno' in usuario else "")+(" "+usuario["apMaterno"] if 'apMaterno' in usuario else "")
-            listaVentas.append({"idVenta":str(s["_id"]), "fechaVenta":s["fechaVenta"], "horaVenta":s["horaVenta"], "cliente":s["cliente"], "cajero":s["cajero"], "pagadoEfectivo":s["pagadoEfectivo"], "pagadoTarjeta":s["pagadoTarjeta"], "pagadoTrans":s["pagadoTrans"], "total":s["total"]})
+            # Attempt to parse the fechaVenta field
+            try:
+                fecha_venta = datetime.strptime(s["fechaVenta"], "%d/%m/%Y")
+            except ValueError:
+                fecha_venta = datetime.strptime(s["fechaVenta"], "%m/%d/%Y")
+        
+            # Include the sale if its fechaVenta is within the specified range
+            if start_date <= fecha_venta <= end_date:
+                cliente = self.db.Clientes.find_one({"_id": s["cliente"]})
+                s["cliente"] = cliente["nombre"] + (" " + cliente["apPaterno"] if 'apPaterno' in cliente else "") + (" " + cliente["apMaterno"] if 'apMaterno' in cliente else "")
+                usuario = self.db.Usuarios.find_one({"_id": s["cajero"]})
+                s["cajero"] = usuario["nombre"] + (" " + usuario["apPaterno"] if 'apPaterno' in usuario else "") + (" " + usuario["apMaterno"] if 'apMaterno' in usuario else "")
+                listaVentas.append({
+                    "idVenta": str(s["_id"]),
+                    "fechaVenta": s["fechaVenta"],
+                    "horaVenta": s["horaVenta"],
+                    "cliente": s["cliente"],
+                    "cajero": s["cajero"],
+                    "pagadoEfectivo": s["pagadoEfectivo"],
+                    "pagadoTarjeta": s["pagadoTarjeta"],
+                    "pagadoTrans": s["pagadoTrans"],
+                    "total": s["total"]
+                })
+
+        # Helper function to parse date and time
+        def parse_datetime(date_str, time_str):
+            try:
+                return datetime.strptime(date_str + " " + time_str, "%d/%m/%Y %H:%M")
+            except ValueError:
+                return datetime.strptime(date_str + " " + time_str, "%m/%d/%Y %H:%M")
+
+        # Sort the list of sales by date and hour in descending order
+        listaVentas.sort(key=lambda x: parse_datetime(x["fechaVenta"], x["horaVenta"]), reverse=True)
+        
         if len(listaVentas) > 0:
             resp["estatus"]="ok"
             resp["mensaje"]="Lista de ventas"

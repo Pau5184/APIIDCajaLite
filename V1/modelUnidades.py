@@ -12,7 +12,7 @@ class Conexion():
             resp["estatus"]="error"
             resp["mensaje"]="La unidad ya existe"
         else:
-            self.db.Unidades.insert_one(data)
+            self.db.UnidadesMedida.insert_one(data)
             resp["estatus"]="ok"
             resp["mensaje"]="Unidad registrada"
         return resp

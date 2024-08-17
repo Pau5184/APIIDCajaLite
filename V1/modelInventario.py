@@ -48,6 +48,12 @@ class Conexion():
         except ValueError:
             end_date = datetime.strptime(end_date_str, "%m/%d/%Y")
 
+        # Check if start_date is greater than end_date
+        if start_date > end_date:
+            resp["estatus"] = "error"
+            resp["mensaje"] = "La fecha de inicio no puede ser mayor que la fecha de fin"
+            return resp
+
         # Ensure end_date is at the end of the day
         end_date = end_date.replace(hour=23, minute=59, second=59)
 

@@ -67,18 +67,19 @@ class Conexion():
                     "_id": str(s["_id"]),
                     "concepto": s["concepto"],
                     "fecha": s["fecha"],
-                    "totalUnidades": s["totalUnidades"]
+                    "totalUnidades": s["totalUnidades"],
+                    "hora": s["hora"]
                 })
 
         # Helper function to parse date
-        def parse_date(date_str):
+        def parse_datetime(date_str, time_str):
             try:
-                return datetime.strptime(date_str, "%d/%m/%Y")
+                return datetime.strptime(date_str + " " + time_str, "%d/%m/%Y %H:%M")
             except ValueError:
-                return datetime.strptime(date_str, "%m/%d/%Y")
+                return datetime.strptime(date_str + " " + time_str, "%m/%d/%Y %H:$M")
 
         # Sort the list of inventories by date
-        listaInventarios.sort(key=lambda x: parse_date(x["fecha"]), reverse= True)
+        listaInventarios.sort(key=lambda x: parse_datetime(x["fecha"], x["hora"]), reverse= True)
 
         if len(listaInventarios) > 0:
             resp["estatus"] = "ok"
@@ -102,7 +103,7 @@ class Conexion():
                 listaProductos.append({"codigoBase":producto["codigoBase"], "producto":producto["nombre"], "cantidad":s["cantidad"], "costoCompra":s["costoCompra"]})
             resp["estatus"]="ok"
             resp["mensaje"]="Inventario encontrado"
-            resp["inventario"]={"_id":str(inventario["_id"]), "concepto":inventario["concepto"], "almacen":inventario["almacen"], "usuario":usuario["nombre"], "estatus":inventario["estatus"], "fecha":inventario["fecha"], "totalUnidades":inventario["totalUnidades"], "productos":listaProductos, "partidas":inventario["partidas"], "total":inventario["total"]}
+            resp["inventario"]={"_id":str(inventario["_id"]), "concepto":inventario["concepto"], "almacen":inventario["almacen"], "usuario":usuario["nombre"], "estatus":inventario["estatus"], "fecha":inventario["fecha"], "hora":inventario["hora"], "totalUnidades":inventario["totalUnidades"], "productos":listaProductos, "partidas":inventario["partidas"], "total":inventario["total"]}
         else:
             resp["estatus"]="error"
             resp["mensaje"]="Inventario no encontrado"

@@ -68,7 +68,8 @@ class Conexion():
                     "concepto": s["concepto"],
                     "fecha": s["fecha"],
                     "totalUnidades": s["totalUnidades"],
-                    "hora": s["hora"]
+                    "hora": s["hora"],
+                    "descripcion": s["descripcion"]
                 })
 
         # Helper function to parse date
@@ -103,7 +104,7 @@ class Conexion():
                 listaProductos.append({"codigoBase":producto["codigoBase"], "producto":producto["nombre"], "cantidad":s["cantidad"], "costoCompra":s["costoCompra"]})
             resp["estatus"]="ok"
             resp["mensaje"]="Inventario encontrado"
-            resp["inventario"]={"_id":str(inventario["_id"]), "concepto":inventario["concepto"], "almacen":inventario["almacen"], "usuario":usuario["nombre"], "estatus":inventario["estatus"], "fecha":inventario["fecha"], "hora":inventario["hora"], "totalUnidades":inventario["totalUnidades"], "productos":listaProductos, "partidas":inventario["partidas"], "total":inventario["total"]}
+            resp["inventario"]={"_id":str(inventario["_id"]), "concepto":inventario["concepto"], "almacen":inventario["almacen"], "usuario":usuario["nombre"], "estatus":inventario["estatus"], "fecha":inventario["fecha"], "hora":inventario["hora"], "totalUnidades":inventario["totalUnidades"], "productos":listaProductos, "partidas":inventario["partidas"], "total":inventario["total"], "descripcion": inventario["descripcion"]}
         else:
             resp["estatus"]="error"
             resp["mensaje"]="Inventario no encontrado"

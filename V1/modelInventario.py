@@ -15,7 +15,7 @@ class Conexion():
             data["usuario"]=ObjectId(data["usuario"])
             self.db.Inventario.insert_one(data)
             for producto in data['productos']:
-                if data['concepto'] in ["ENTRADA POR COMPRAS M.I.", "ENTRADA POR AJUSTE DE INVENTARIO"]:
+                if data['concepto'] in ["ENTRADA DE MERCANCIA"]:
                     self.db.Productos.update_one(
                         {'codigoBase': producto['producto']},
                         {'$inc': {'existencia': producto['cantidad']}}

@@ -4,9 +4,9 @@ from bson.binary import Binary
 import base64
 
 class Conexion():
-    def __init__(self):
+    def __init__(self, db_name):
         self.cliente = MongoClient("mongodb+srv://apbarajas658:32GeaC79hqdZNTbf@cluster0.6f3klmh.mongodb.net/")
-        self.db = self.cliente.IDCajaLite
+        self.db = self.cliente[db_name]
 
     def obtenerEmpresa(self):
         resp={"estatus":"", "mensaje":""}

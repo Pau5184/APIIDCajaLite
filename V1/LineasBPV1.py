@@ -6,31 +6,46 @@ lineasBP = Blueprint('LineasBP', __name__)
 @lineasBP.route('/registrarLinea', methods=['POST'])
 def registrar_linea():
     data = request.get_json()
-    conn = Conexion()
+    db_name = request.args.get('db_name')
+    if not db_name:
+        return {"estatus": "error", "mensaje": "Database name is required"}, 400
+    conn = Conexion(db_name)
     resp = conn.registrarLinea(data)
     return resp
 
 @lineasBP.route('/obtenerLineas', methods=['GET'])
 def obtener_lineas():
-    conn = Conexion()
+    db_name = request.args.get('db_name')
+    if not db_name:
+        return {"estatus": "error", "mensaje": "Database name is required"}, 400
+    conn = Conexion(db_name)
     resp = conn.obtenerLineas()
     return resp
 
 @lineasBP.route('/editarLinea', methods=['PUT'])
 def editar_linea():
     data = request.get_json()
-    conn = Conexion()
+    db_name = request.args.get('db_name')
+    if not db_name:
+        return {"estatus": "error", "mensaje": "Database name is required"}, 400
+    conn = Conexion(db_name)
     resp = conn.editarLinea(data)
     return resp
 
 @lineasBP.route('/eliminarLinea/<idLinea>', methods=['DELETE'])
 def eliminar_linea(idLinea):
-    conn = Conexion()
+    db_name = request.args.get('db_name')
+    if not db_name:
+        return {"estatus": "error", "mensaje": "Database name is required"}, 400
+    conn = Conexion(db_name)
     resp = conn.eliminarLinea(idLinea)
     return resp
 
 @lineasBP.route('/obtenerUltimoIdL', methods=['GET'])
 def obtenerUltimoIdL():
-    conn = Conexion()
+    db_name = request.args.get('db_name')
+    if not db_name:
+        return {"estatus": "error", "mensaje": "Database name is required"}, 400
+    conn = Conexion(db_name)
     resp = conn.obtenerUltimoIdL()
     return resp

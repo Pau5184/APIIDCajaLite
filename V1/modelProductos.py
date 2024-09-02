@@ -29,7 +29,7 @@ class Conexion():
         listaProductos = []
         for s in productos:
             image_base64 = base64.b64encode(s['foto']).decode('utf-8')
-            listaProductos.append({"codigoBase":s["codigoBase"], "nombre":s["nombre"], "foto":image_base64, "existencia":s["existencia"], "precios":s["precios"], "unidadBase":s["unidadBase"], "unidadCompra":s["unidadCompra"]})
+            listaProductos.append({"codigoBase":s["codigoBase"], "nombre":s["nombre"], "foto":image_base64, "existencia":s["existencia"], "precios":s["precios"], "unidadBase":s["unidadBase"], "unidadCompra":s["unidadCompra"], "costoCompra":s["costoCompra"], "fechaUltimaCompra":s["fechaUltimaCompra"]})
         if len(listaProductos) > 0:
             resp["estatus"]="ok"
             resp["mensaje"]="Lista de productos"
@@ -62,7 +62,7 @@ class Conexion():
             image_base64 = base64.b64encode(producto['foto']).decode('utf-8')
             resp["estatus"]="ok"
             resp["mensaje"]="Producto encontrado"
-            resp["producto"]={"codigoBase":producto["codigoBase"], "nombre":producto["nombre"], "descripcion":producto["descripcion"],"foto":image_base64, "unidadBase":producto["unidadBase"], "unidadCompra":producto["unidadCompra"], "factorConversion":producto["factorConversion"],"existencia":producto["existencia"], "proveedor":producto["proveedor"], "estatus":producto["estatus"], "minimoVender":producto["minimoVender"], "marca":producto["marca"], "linea":producto["linea"], "ancho":producto["ancho"], "alto":producto["alto"], "largo":producto["largo"], "volumen":producto["volumen"], "precios":producto["precios"]}
+            resp["producto"]={"codigoBase":producto["codigoBase"], "nombre":producto["nombre"], "descripcion":producto["descripcion"],"foto":image_base64, "unidadBase":producto["unidadBase"], "unidadCompra":producto["unidadCompra"], "factorConversion":producto["factorConversion"],"existencia":producto["existencia"], "proveedor":producto["proveedor"], "estatus":producto["estatus"], "minimoVender":producto["minimoVender"], "marca":producto["marca"], "linea":producto["linea"], "ancho":producto["ancho"], "alto":producto["alto"], "largo":producto["largo"], "volumen":producto["volumen"], "precios":producto["precios"], "costoCompra": producto["costoCompra"], "fechaUltimaCompra":producto["fechaUltimaCompra"]}
         else:
             resp["estatus"]="error"
             resp["mensaje"]="Producto no encontrado"

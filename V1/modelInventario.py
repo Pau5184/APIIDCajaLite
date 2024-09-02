@@ -19,12 +19,18 @@ class Conexion():
                 if data['concepto'] in ["ENTRADA DE MERCANCIA"]:
                     self.db.Productos.update_one(
                         {'codigoBase': producto['producto']},
-                        {'$inc': {'existencia': producto['cantidad']}}
+                        {
+                            '$inc': {'existencia': producto['cantidad']},
+                            '$set': {
+                                'costoCompra': producto['costoCompra'],
+                                'fechaUltimaCompra': data['fecha']  # Assuming you want to set it to the current date and time
+                            }
+                        }
                     )
                 else:
                     self.db.Productos.update_one(
                         {'codigoBase': producto['producto']},
-                        {'$inc': {'existencia': -producto['cantidad']}}
+                        {'$inc': {'existencia': -producto['cantidad']},}
                     )
             resp["estatus"]="ok"
             resp["mensaje"]="Producto registrado"

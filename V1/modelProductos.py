@@ -262,7 +262,7 @@ class Conexion():
                     "codigoBase":s["codigoBase"], 
                     "nombre":s["nombre"], 
                     "existencia":s["existencia"], 
-                    "precio":s["precios"][0]["total"],  # Only include the total of the first precio
+                    "precios":s["precios"],  # Only include the total of the first precio
                     "unidadBase":unidad_base_nombre,
                     "foto":image_base64
                 })

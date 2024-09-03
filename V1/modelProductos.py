@@ -96,54 +96,65 @@ class Conexion():
     
     def obtenerProducto(self, codigoBase):
         resp = {"estatus": "", "mensaje": ""}
-        producto = self.db.Productos.find_one({"codigoBase": codigoBase})
-        
-        if producto:
-            image_base64 = base64.b64encode(producto['foto']).decode('utf-8')
+        try:
+            producto = self.db.Productos.find_one({"codigoBase": codigoBase})
             
-            # Look up unidadBase in UnidadesMedida collection
-            unidad_base_nombre = ""
-            if producto["unidadBase"]:
-                unidad_base = self.db.UnidadesMedida.find_one({"_id": ObjectId(producto["unidadBase"])})
-                if unidad_base:
-                    unidad_base_nombre = unidad_base.get("nombre")
-            
-            # Look up unidadCompra in UnidadesMedida collection
-            unidad_compra_nombre = ""
-            if producto["unidadCompra"]:
-                unidad_compra = self.db.UnidadesMedida.find_one({"_id": ObjectId(producto["unidadCompra"])})
-                if unidad_compra:
-                    unidad_compra_nombre = unidad_compra.get("nombre")
-            
-            resp["estatus"] = "ok"
-            resp["mensaje"] = "Producto encontrado"
-            resp["producto"] = {
-                "codigoBase": producto["codigoBase"],
-                "nombre": producto["nombre"],
-                "descripcion": producto["descripcion"],
-                "unidadBase": unidad_base_nombre,
-                "unidadBaseId": str(producto["unidadBase"]),
-                "unidadCompra": unidad_compra_nombre,
-                "unidadCompraId": str(producto["unidadCompra"]),
-                "factorConversion": producto["factorConversion"],
-                "existencia": producto["existencia"],
-                "proveedor": producto["proveedor"],
-                "estatus": producto["estatus"],
-                "minimoVender": producto["minimoVender"],
-                "marca": producto["marca"],
-                "linea": producto["linea"],
-                "ancho": producto["ancho"],
-                "alto": producto["alto"],
-                "largo": producto["largo"],
-                "volumen": producto["volumen"],
-                "precios": producto["precios"],
-                "costoCompra": producto["costoCompra"],
-                "fechaUltimaCompra": producto["fechaUltimaCompra"],
-                "foto": image_base64
-            }
-        else:
+            if producto:
+                image_base64 = base64.b64encode(producto['foto']).decode('utf-8')
+                
+                # Look up unidadBase in UnidadesMedida collection
+                unidad_base_nombre = ""
+                unidad_base_id = ""
+                if producto["unidadBase"]:
+                    unidad_base = self.db.UnidadesMedida.find_one({"_id": ObjectId(producto["unidadBase"])})
+                    if unidad_base:
+                        unidad_base_nombre = unidad_base.get("nombre")
+                        unidad_base_id = str(producto["unidadBase"])
+                
+                # Look up unidadCompra in UnidadesMedida collection
+                unidad_compra_nombre = ""
+                unidad_compra_id = ""
+                if producto["unidadCompra"]:
+                    unidad_compra = self.db.UnidadesMedida.find_one({"_id": ObjectId(producto["unidadCompra"])})
+                    if unidad_compra:
+                        unidad_compra_nombre = unidad_compra.get("nombre")
+                        unidad_compra_id = str(producto["unidadCompra"])
+                
+                resp["estatus"] = "ok"
+                resp["mensaje"] = "Producto encontrado"
+                resp["producto"] = {
+                    "codigoBase": producto["codigoBase"],
+                    "nombre": producto["nombre"],
+                    "descripcion": producto["descripcion"],
+                    "unidadBase": unidad_base_nombre,
+                    "unidadBaseId": unidad_base_id,
+                    "unidadCompra": unidad_compra_nombre,
+                    "unidadCompraId": unidad_compra_id,
+                    "factorConversion": producto["factorConversion"],
+                    "existencia": producto["existencia"],
+                    "proveedor": producto["proveedor"],
+                    "estatus": producto["estatus"],
+                    "minimoVender": producto["minimoVender"],
+                    "marca": producto["marca"],
+                    "linea": producto["linea"],
+                    "ancho": producto["ancho"],
+                    "alto": producto["alto"],
+                    "largo": producto["largo"],
+                    "volumen": producto["volumen"],
+                    "precios": producto["precios"],
+                    "costoCompra": producto["costoCompra"],
+                    "fechaUltimaCompra": producto["fechaUltimaCompra"],
+                    "foto": image_base64
+                }
+            else:
+                resp["estatus"] = "error"
+                resp["mensaje"] = "Producto no encontrado"
+        except PyMongoError as e:
             resp["estatus"] = "error"
-            resp["mensaje"] = "Producto no encontrado"
+            resp["mensaje"] = f"Database error: {str(e)}"
+        except Exception as e:
+            resp["estatus"] = "error"
+            resp["mensaje"] = f"Unexpected error: {str(e)}"
         
         return resp
     

@@ -23,7 +23,7 @@ class Conexion():
         lineas = self.db.Lineas.find()
         listaLineas = []
         for s in lineas:
-            listaLineas.append({"idLinea":s["idLinea"], "nombre":s["nombre"]})
+            listaLineas.append({"_id":str(s["_id"]),"idLinea":s["idLinea"], "nombre":s["nombre"]})
         if len(listaLineas) > 0:
             resp["estatus"]="ok"
             resp["mensaje"]="Lista de lineas"

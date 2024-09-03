@@ -23,7 +23,7 @@ class Conexion():
         marcas = self.db.Marcas.find()
         listaMarcas = []
         for s in marcas:
-            listaMarcas.append({"idMarca":s["idMarca"], "nombre":s["nombre"]})
+            listaMarcas.append({"_id":str(s["_id"]),"idMarca":s["idMarca"], "nombre":s["nombre"]})
         if len(listaMarcas) > 0:
             resp["estatus"]="ok"
             resp["mensaje"]="Lista de marcas"

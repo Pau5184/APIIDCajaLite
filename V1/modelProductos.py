@@ -26,6 +26,12 @@ class Conexion():
                 if data["unidadCompra"]:
                     data["unidadCompra"] = ObjectId(data["unidadCompra"])
                 
+                if data["marca"]:
+                    data["marca"] = ObjectId(data["marca"])
+
+                if data["linea"]:
+                    data["linea"] = ObjectId(data["linea"])
+                
                 self.db.Productos.insert_one(data)
                 resp["estatus"] = "ok"
                 resp["mensaje"] = "Producto registrado"
@@ -120,6 +126,24 @@ class Conexion():
                         unidad_compra_nombre = unidad_compra.get("nombre")
                         unidad_compra_id = str(producto["unidadCompra"])
                 
+                # Look up marca in Marcas collection
+                marca_nombre = ""
+                marca_id = ""
+                if producto["marca"]:
+                    marca = self.db.Marcas.find_one({"_id": ObjectId(producto["marca"])})
+                    if marca:
+                        marca_nombre = marca.get("nombre")
+                        marca_id = str(producto["marca"])
+                
+                # Look up linea in Lineas collection
+                linea_nombre = ""
+                linea_id = ""
+                if producto["linea"]:
+                    linea = self.db.Lineas.find_one({"_id": ObjectId(producto["linea"])})
+                    if linea:
+                        linea_nombre = linea.get("nombre")
+                        linea_id = str(producto["linea"])
+                
                 resp["estatus"] = "ok"
                 resp["mensaje"] = "Producto encontrado"
                 resp["producto"] = {
@@ -135,8 +159,10 @@ class Conexion():
                     "proveedor": producto["proveedor"],
                     "estatus": producto["estatus"],
                     "minimoVender": producto["minimoVender"],
-                    "marca": producto["marca"],
-                    "linea": producto["linea"],
+                    "linea": linea_nombre,
+                    "lineaId": linea_id,
+                    "marca": marca_nombre,
+                    "marcaId": marca_id,
                     "ancho": producto["ancho"],
                     "alto": producto["alto"],
                     "largo": producto["largo"],
@@ -179,6 +205,20 @@ class Conexion():
                         data["unidadCompra"] = ObjectId(data["unidadCompra"])
                     except Exception as e:
                         data["unidadCompra"] = ""
+                
+                # Look up marca in Marcas collection
+                if 'marca' in data and data["marca"]:
+                    try:
+                        data["marca"] = ObjectId(data["marca"])
+                    except Exception as e:
+                        data["marca"] = ""
+                
+                # Look up linea in Lineas collection
+                if 'linea' in data and data["linea"]:
+                    try:
+                        data["linea"] = ObjectId(data["linea"])
+                    except Exception as e:
+                        data["linea"] = ""
                 
                 self.db.Productos.update_one({"codigoBase":data["codigoBase"]},{"$set":data})
                 resp["estatus"]="ok"

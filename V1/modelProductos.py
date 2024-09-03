@@ -263,6 +263,7 @@ class Conexion():
                     "nombre":s["nombre"], 
                     "existencia":s["existencia"], 
                     "precios":s["precios"],  # Only include the total of the first precio
+                    "precioSeleccionado":s["precios"][0],
                     "unidadBase":unidad_base_nombre,
                     "foto":image_base64
                 })

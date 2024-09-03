@@ -23,7 +23,7 @@ class Conexion():
         unidades = self.db.UnidadesMedida.find()
         listaUnidades = []
         for s in unidades:
-            listaUnidades.append({"idUnidad":s["idUnidad"], "nombre":s["nombre"]})
+            listaUnidades.append({"_id":str(s["_id"]),"idUnidad":s["idUnidad"], "nombre":s["nombre"]})
         if len(listaUnidades) > 0:
             resp["estatus"]="ok"
             resp["mensaje"]="Lista de unidades"

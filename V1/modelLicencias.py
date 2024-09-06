@@ -35,7 +35,7 @@ class Conexion():
                     resp["mensaje"] = "Licencia expirada"
             else:
                 resp["estatus"] = "error"
-                resp["mensaje"] = "Licencia no válida"
+                resp["mensaje"] = "No existe el dispositivo"
         except Exception as e:
             resp["estatus"] = "error"   
             resp["mensaje"] = str(e)

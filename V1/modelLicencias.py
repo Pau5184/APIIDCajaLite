@@ -14,9 +14,9 @@ class Conexion():
         try:
             # Convert fechaActivacion and fechaExpiracion to date type
             if "fechaActivacion" in data:
-                data["fechaActivacion"] = parse(data["fechaActivacion"])
+                data["fechaActivacion"] = datetime.fromisoformat(data["fechaActivacion"].replace("Z", "+00:00"))
             if "fechaExpiracion" in data:
-                data["fechaExpiracion"] = parse(data["fechaExpiracion"])
+                data["fechaExpiracion"] = datetime.fromisoformat(data["fechaExpiracion"].replace("Z", "+00:00"))
             
             self.db.Licencias.insert_one(data)
             resp["estatus"] = "ok"

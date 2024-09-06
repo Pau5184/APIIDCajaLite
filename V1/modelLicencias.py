@@ -11,6 +11,12 @@ class Conexion():
     def registrarLicencia(self, data):
         resp = {"estatus": "", "mensaje": ""}
         try:
+            # Convert fechaActivacion and fechaExpiracion to date type
+            if "fechaActivacion" in data:
+                data["fechaActivacion"] = datetime.strptime(data["fechaActivacion"], "%Y-%m-%d")
+            if "fechaExpiracion" in data:
+                data["fechaExpiracion"] = datetime.strptime(data["fechaExpiracion"], "%Y-%m-%d")
+            
             self.db.Licencias.insert_one(data)
             resp["estatus"] = "ok"
             resp["mensaje"] = "Licencia registrada con éxito"

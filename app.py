@@ -8,6 +8,7 @@ from V1.UsuariosBPV1 import usuariosBP
 from V1.InventarioBPV1 import inventarioBP
 from V1.UnidadesBPV1 import unidadesBP
 from V1.EmpresaBPV1 import empresaBP
+from V1.LicenciasBPV1 import licenciasBP
 from flask_cors import CORS
 
 app=Flask(__name__)
@@ -21,6 +22,7 @@ app.register_blueprint(usuariosBP)
 app.register_blueprint(inventarioBP)
 app.register_blueprint(unidadesBP)
 app.register_blueprint(empresaBP)
+app.register_blueprint(licenciasBP)
 
 @app.route('/',methods=['GET'])
 def init():

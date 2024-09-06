@@ -2,6 +2,7 @@ from pymongo import MongoClient
 from bson import ObjectId
 from bson.binary import Binary
 from datetime import datetime
+from dateutil.parser import parse
 
 class Conexion():
     def __init__(self):
@@ -13,9 +14,9 @@ class Conexion():
         try:
             # Convert fechaActivacion and fechaExpiracion to date type
             if "fechaActivacion" in data:
-                data["fechaActivacion"] = datetime.strptime(data["fechaActivacion"], "%Y-%m-%d")
+                data["fechaActivacion"] = parse(data["fechaActivacion"])
             if "fechaExpiracion" in data:
-                data["fechaExpiracion"] = datetime.strptime(data["fechaExpiracion"], "%Y-%m-%d")
+                data["fechaExpiracion"] = parse(data["fechaExpiracion"])
             
             self.db.Licencias.insert_one(data)
             resp["estatus"] = "ok"

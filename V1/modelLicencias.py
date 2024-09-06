@@ -26,18 +26,23 @@ class Conexion():
             licencia = self.db.Licencias.find_one({"dispositivo": data["deviceId"]})
             if licencia:
                 fechaExpiracion = licencia["fechaExpiracion"]
+                activado = licencia["activado"]
                 fechaActual = datetime.now()
-                if fechaExpiracion <= fechaActual:
-                    resp["estatus"] = "ok"
-                    resp["mensaje"] = "Licencia válida"
+                if activado:
+                    if fechaExpiracion >= fechaActual:
+                        resp["estatus"] = "ok"
+                        resp["mensaje"] = "Licencia válida"
+                    else:
+                        resp["estatus"] = "error"
+                        resp["mensaje"] = "Licencia expirada"
                 else:
                     resp["estatus"] = "error"
-                    resp["mensaje"] = "Licencia expirada"
+                    resp["mensaje"] = "Licencia no activada"
             else:
                 resp["estatus"] = "error"
                 resp["mensaje"] = "No existe el dispositivo"
         except Exception as e:
-            resp["estatus"] = "error"   
+            resp["estatus"] = "error"
             resp["mensaje"] = str(e)
         return resp
             

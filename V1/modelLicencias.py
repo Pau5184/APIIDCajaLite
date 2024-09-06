@@ -23,7 +23,7 @@ class Conexion():
     def validarLicencia(self, data):
         resp = {"estatus": "", "mensaje": ""}
         try:
-            licencia = self.db.Licencias.find_one({"dispositivo": data})
+            licencia = self.db.Licencias.find_one({"dispositivo": data["deviceId"]})
             if licencia:
                 fechaExpiracion = licencia["fechaExpiracion"]
                 fechaActual = datetime.now()

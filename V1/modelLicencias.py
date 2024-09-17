@@ -2,7 +2,6 @@ from pymongo import MongoClient
 from bson import ObjectId
 from bson.binary import Binary
 from datetime import datetime
-from dateutil.parser import parse
 
 class Conexion():
     def __init__(self):
@@ -48,6 +47,21 @@ class Conexion():
             else:
                 resp["estatus"] = "error"
                 resp["mensaje"] = "No existe el dispositivo"
+        except Exception as e:
+            resp["estatus"] = "error"
+            resp["mensaje"] = str(e)
+        return resp
+    
+    #Get licenses
+    def obtenerLicencias(self):
+        resp = {"estatus": "", "mensaje": "", "data": []}
+        try:
+            licencias = self.db.Licencias.find()
+            for licencia in licencias:
+                licencia["_id"] = str(licencia["_id"])
+                resp["data"].append(licencia)
+            resp["estatus"] = "ok"
+            resp["mensaje"] = "Licencias obtenidas con éxito"
         except Exception as e:
             resp["estatus"] = "error"
             resp["mensaje"] = str(e)

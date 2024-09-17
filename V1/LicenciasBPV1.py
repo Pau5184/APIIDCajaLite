@@ -17,3 +17,10 @@ def validarLicencia():
     conn = Conexion()
     resp = conn.validarLicencia(data)
     return resp
+
+#Get licenses
+@licenciasBP.route('/obtenerLicencias', methods=['GET'])
+def obtenerLicencias():
+    conn = Conexion()
+    resp = conn.obtenerLicencias()
+    return resp

@@ -66,4 +66,16 @@ class Conexion():
             resp["estatus"] = "error"
             resp["mensaje"] = str(e)
         return resp
+    
+    #Update license status activado
+    def activarLicencia(self, data):
+        resp = {"estatus": "", "mensaje": ""}
+        try:
+            self.db.Licencias.update_one({"_id": ObjectId(data["_id"])}, {"$set": {"activado": data["activado"]}})
+            resp["estatus"] = "ok"
+            resp["mensaje"] = "Licencia activada con éxito"
+        except Exception as e:
+            resp["estatus"] = "error"
+            resp["mensaje"] = str(e)
+        return resp
             

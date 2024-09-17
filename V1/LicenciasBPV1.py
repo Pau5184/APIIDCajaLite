@@ -24,3 +24,11 @@ def obtenerLicencias():
     conn = Conexion()
     resp = conn.obtenerLicencias()
     return resp
+
+#Activate license
+@licenciasBP.route('/activarLicencia', methods=['POST'])
+def activarLicencia():
+    data = request.get_json()
+    conn = Conexion()
+    resp = conn.activarLicencia(data)
+    return resp

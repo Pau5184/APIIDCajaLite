@@ -71,7 +71,11 @@ class Conexion():
     def activarLicencia(self, data):
         resp = {"estatus": "", "mensaje": ""}
         try:
-            self.db.Licencias.update_one({"_id": ObjectId(data["_id"])}, {"$set": {"activado": data["activado"]}})
+            if "fechaActivacion" in data:
+                data["fechaActivacion"] = datetime.fromisoformat(data["fechaActivacion"].replace("Z", "+00:00"))
+            if "fechaExpiracion" in data:
+                data["fechaExpiracion"] = datetime.fromisoformat(data["fechaExpiracion"].replace("Z", "+00:00"))
+            self.db.Licencias.update_one({"_id": ObjectId(data["_id"])}, {"$set": {"activado": data["activado"], "tipo": data["tipo"], "fechaActivacion":data["fechaActivacion"], "fechaExpiracion":data["fechaExpiracion"]}})
             resp["estatus"] = "ok"
             resp["mensaje"] = "Licencia activada con éxito"
         except Exception as e:

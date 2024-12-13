@@ -16,11 +16,12 @@ class Conexion():
             data["usuario"]=ObjectId(data["usuario"])
             self.db.Inventario.insert_one(data)
             for producto in data['productos']:
+                cantidad_convertida = producto['factorConversion'] * producto['cantidad']
                 if data['concepto'] in ["ENTRADA DE MERCANCIA"]:
                     self.db.Productos.update_one(
                         {'codigoBase': producto['producto']},
                         {
-                            '$inc': {'existencia': producto['cantidad']},
+                            '$inc': {'existencia': cantidad_convertida},
                             '$set': {
                                 'costoCompra': producto['costoCompra'],
                                 'fechaUltimaCompra': data['fecha']  # Assuming you want to set it to the current date and time

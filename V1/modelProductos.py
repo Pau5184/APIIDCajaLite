@@ -71,7 +71,8 @@ class Conexion():
                 "unidadCompra": unidad_compra_nombre,
                 "costoCompra": s["costoCompra"],
                 "fechaUltimaCompra": s["fechaUltimaCompra"],
-                "foto": image_base64
+                "foto": image_base64,
+                "factorConversion": s["factorConversion"]
             })
         
         if len(listaProductos) > 0:

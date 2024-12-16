@@ -129,6 +129,18 @@ class Conexion():
             resp["mensaje"]="Venta no encontrada"
         return resp
     
+    def obtenerVenta(self, id):
+        resp = {"estatus":"","mensaje":""}
+        venta = self.db.Ventas.find_one({"_id":ObjectId(id)})
+        if venta:
+            resp["estatus"]="ok"
+            resp["mensaje"]="Venta encontrada"
+            resp["venta"]=venta
+        else:
+            resp["estatus"]="error"
+            resp["mensaje"]="Venta no encontrada"
+        return resp
+    
     def editarVenta(self, data):
         resp = {"estatus":"","mensaje":""}
         venta=self.db.Ventas.find_one({"_id":ObjectId(data["_id"])})

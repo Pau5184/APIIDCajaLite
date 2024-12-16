@@ -42,6 +42,15 @@ def obtenerTiquet(id):
     resp = conn.obtenerTiquet(id)
     return resp
 
+@ventasBP.route('/obtenerVenta/<id>', methods=['GET'])
+def obtenerVenta(id):
+    db_name = request.args.get('db_name')
+    if not db_name:
+        return {"estatus": "error", "mensaje": "Database name is required"}, 400
+    conn = Conexion(db_name)
+    resp = conn.obtenerVenta(id)
+    return resp
+
 @ventasBP.route('/editarVenta', methods=['PUT'])
 def editarVenta():
     data = request.get_json()

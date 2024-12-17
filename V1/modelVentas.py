@@ -133,9 +133,15 @@ class Conexion():
         resp = {"estatus":"","mensaje":""}
         venta = self.db.Ventas.find_one({"_id":ObjectId(id)})
         if venta:
+            cliente = self.db.Clientes.find_one({"_id": venta["cliente"]})
+            cajero = self.db.Usuarios.find_one({"_id": venta["cajero"]})
+            listaProductos = []
+            for s in venta['productos']:
+                producto = self.db.Productos.find_one({'codigoBase': s['producto']})
+                listaProductos.append({"codigoBase":producto["codigoBase"], "producto":producto["nombre"], "cantidad":s["cantidad"], "importe":s["importe"]})
             resp["estatus"]="ok"
             resp["mensaje"]="Venta encontrada"
-            resp["venta"]=venta
+            resp["venta"]={"_id":str(venta["_id"]), "fechaVenta":venta["fechaVenta"], "horaVenta":venta["horaVenta"], "cliente":cliente["nombre"] + (" " + cliente["apPaterno"] if 'apPaterno' in cliente else "") + (" " + cliente["apMaterno"] if 'apMaterno' in cliente else ""), "cajero":cajero["nombre"] + (" " + cajero["apPaterno"] if 'apPaterno' in cajero else "") + (" " + cajero["apMaterno"] if 'apMaterno' in cajero else ""), "pagadoEfectivo":venta["pagadoEfectivo"], "pagadoTarjeta":venta["pagadoTarjeta"], "pagadoTrans":venta["pagadoTrans"], "total":venta["total"], "totalRecibido":venta["totalRecibido"],"productos":listaProductos}
         else:
             resp["estatus"]="error"
             resp["mensaje"]="Venta no encontrada"

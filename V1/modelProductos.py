@@ -171,7 +171,8 @@ class Conexion():
                     "precios": producto["precios"],
                     "costoCompra": producto["costoCompra"],
                     "fechaUltimaCompra": producto["fechaUltimaCompra"],
-                    "foto": image_base64
+                    # "foto": 
+                    "foto": ""
                 }
             else:
                 resp["estatus"] = "error"

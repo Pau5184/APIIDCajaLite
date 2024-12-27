@@ -71,7 +71,7 @@ class Conexion():
                 "unidadCompra": unidad_compra_nombre,
                 "costoCompra": s["costoCompra"],
                 "fechaUltimaCompra": s["fechaUltimaCompra"],
-                "foto": image_base64,
+                "foto": "",
                 "factorConversion": s["factorConversion"]
             })
         

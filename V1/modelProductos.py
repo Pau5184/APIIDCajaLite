@@ -267,7 +267,7 @@ class Conexion():
                     "precios":s["precios"],  # Only include the total of the first precio
                     "precioSeleccionado":s["precios"][0],
                     "unidadBase":unidad_base_nombre,
-                    "foto":image_base64
+                    "foto":""
                 })
         if len(listaProductos) > 0:
             resp["estatus"]="ok"

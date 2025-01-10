@@ -46,7 +46,7 @@ class Conexion():
         listaProductos = []
         
         for s in productos:
-            image_base64 = base64.b64encode(s['foto']).decode('utf-8')
+            # image_base64 = base64.b64encode(s['foto']).decode('utf-8')
             
             # Look up unidadBase in UnidadesMedida collection
             unidad_base_nombre = ""

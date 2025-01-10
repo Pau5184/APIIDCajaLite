@@ -28,7 +28,7 @@ class Conexion():
         clientes = self.db.Clientes.find()
         listaClientes = []
         for s in clientes:
-            image_base64 = base64.b64encode(s['foto']).decode('utf-8')
+            #image_base64 = base64.b64encode(s['foto']).decode('utf-8')
             listaClientes.append({"_id":str(s["_id"]), "nombre":s["nombre"], "apPaterno":s["apPaterno"], "apMaterno":s["apMaterno"], "foto":"", "telMovil":s["telMovil"], "email":s["email"]})
         if len(listaClientes) > 0:
             resp["estatus"]="ok"

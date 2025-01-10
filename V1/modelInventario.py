@@ -115,7 +115,10 @@ class Conexion():
             listaProductos = []
             for s in inventario["productos"]:
                 producto=self.db.Productos.find_one({"codigoBase":(s["producto"])})
-                listaProductos.append({"codigoBase":producto["codigoBase"], "producto":producto["nombre"], "cantidad":s["cantidad"], "costoCompra":s["costoCompra"]})
+                if producto:
+                    listaProductos.append({"codigoBase":producto["codigoBase"], "producto":producto["nombre"], "cantidad":s["cantidad"], "costoCompra":s["costoCompra"]})
+                else:
+                    listaProductos.append({"codigoBase":s["producto"], "producto":"No encontrado", "cantidad":s["cantidad"], "costoCompra":s["costoCompra"]})
             resp["estatus"]="ok"
             resp["mensaje"]="Inventario encontrado"
             resp["inventario"]={"_id":str(inventario["_id"]), "concepto":inventario["concepto"], "almacen":inventario["almacen"], "usuario":usuario["nombre"], "estatus":inventario["estatus"], "fecha":inventario["fecha"], "hora":inventario["hora"], "totalUnidades":inventario["totalUnidades"], "productos":listaProductos, "partidas":inventario["partidas"], "total":inventario["total"], "descripcion": inventario["descripcion"]}
